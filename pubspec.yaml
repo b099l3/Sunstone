@@ -1,24 +1,23 @@
 name: sunstone
 description: A way to navigate Fluter Vikings.
-
 publish_to: "none"
-
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.15.1 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
+  auto_route: ^5.0.1
+  cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.2
-
 dev_dependencies:
+  auto_route_generator: ^5.0.1
+  build_runner: ^2.2.0
+  flutter_lints: ^1.0.0
   flutter_test:
     sdk: flutter
-
-  flutter_lints: ^1.0.0
 
 flutter:
   uses-material-design: true
