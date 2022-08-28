@@ -6,10 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../domain/schedule.dart';
 import '../infrastructure/talks_data.dart';
 
-final scheduleProvider = StateProvider<Schedule>((ref) {
-  return Schedule(data: {});
-});
-
 const scheduleKey = 'schedule';
 final savedScheduleProvider = FutureProvider<Schedule>((ref) async {
   final prefs = await SharedPreferences.getInstance();

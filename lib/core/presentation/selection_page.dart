@@ -49,8 +49,8 @@ class SelectionPage extends ConsumerWidget {
                 },
               );
               ref
-                  .read(scheduleProvider.notifier)
-                  .state
+                  .read(savedScheduleProvider)
+                  .value!
                   .data
                   .addAll(Map.fromEntries([talksToAdd]));
 
@@ -95,7 +95,7 @@ class SelectionPage extends ConsumerWidget {
 
   Future<void> saveSelection(WidgetRef ref) async {
     final prefs = await SharedPreferences.getInstance();
-    final scheduleToSave = ref.read(scheduleProvider.notifier).state.toJson();
+    final scheduleToSave = ref.read(savedScheduleProvider).value!.toJson();
     prefs.setString(
       scheduleKey,
       jsonEncode(scheduleToSave),

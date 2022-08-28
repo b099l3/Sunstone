@@ -21,25 +21,25 @@ class SchedulePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final value = ref.watch(scheduleProvider);
-
-    final orderedTalks =
-        OrderedSet<Talk>(Comparing.join([(p) => p.start, (p) => p.title]));
-    orderedTalks.addAll(value.data.entries.expand((e) => e.value));
-
-    final day1Talks = orderedTalks
-        .where((t) => t.start.isSameDate(ConfData.days[0]))
-        .toList();
-    final day2Talks = orderedTalks
-        .where((t) => t.start.isSameDate(ConfData.days[1]))
-        .toList();
-
     AsyncValue<Schedule> config = ref.watch(savedScheduleProvider);
 
     return config.when(
-      loading: () => const CircularProgressIndicator(),
+      loading: () {
+        return const CircularProgressIndicator();
+      },
       error: (err, stack) => Text('Error: $err'),
       data: (savedSchedule) {
+        final orderedTalks =
+            OrderedSet<Talk>(Comparing.join([(p) => p.start, (p) => p.title]));
+        orderedTalks.addAll(savedSchedule.data.entries.expand((e) => e.value));
+
+        final day1Talks = orderedTalks
+            .where((t) => t.start.isSameDate(ConfData.days[0]))
+            .toList();
+        final day2Talks = orderedTalks
+            .where((t) => t.start.isSameDate(ConfData.days[1]))
+            .toList();
+
         return DefaultTabController(
           length: 2,
           child: Scaffold(
@@ -160,7 +160,6 @@ class SchedulePage extends ConsumerWidget {
                             //TODO this should really not be here, but I dont have alot of time
                             final prefs = await SharedPreferences.getInstance();
                             await prefs.clear();
-                            ref.read(scheduleProvider.notifier).state.clear();
                             context.router.replaceAll([const HomeRoute()]);
                           },
                           child: const Text(

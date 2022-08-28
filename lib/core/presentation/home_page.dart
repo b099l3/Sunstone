@@ -20,7 +20,6 @@ class HomePage extends ConsumerWidget {
       loading: () => const CircularProgressIndicator(),
       error: (err, stack) => Text('Error: $err'),
       data: (savedSchedule) {
-        ref.read(scheduleProvider.notifier).state.addFrom(savedSchedule.data);
         return Scaffold(
           appBar: SunstoneAppBar(
             text: 'Sunstone',
