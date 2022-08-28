@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../application/schedule_provider.dart';
 import '../domain/talk.dart';
+import '../domain/time_interval.dart';
 import '../infrastructure/conf_data.dart';
 import '../infrastructure/talks_data.dart';
 import '../infrastructure/time_intervals_data.dart';
@@ -54,7 +55,7 @@ class SelectionPage extends ConsumerWidget {
                   .addAll(Map.fromEntries([talksToAdd]));
 
               await saveSelection(ref);
-              forward(context, ref);
+              forward(context, talksToAdd.value, timeInterval);
             },
             child: TalkCard(talk: talk),
           );
@@ -63,12 +64,31 @@ class SelectionPage extends ConsumerWidget {
     );
   }
 
-  void forward(BuildContext context, WidgetRef ref) {
+  void forward(
+      BuildContext context, List<Talk> talks, TimeInterval timeInterval) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
     final nextTimeIntervalIndex = timeIntervalIndex + 1;
     if (nextTimeIntervalIndex < TimeIntervalsData.data.length) {
+      final talksString = talks.length > 1
+          ? talks
+              .map((t) => t.title)
+              .fold('', (previousValue, element) => '$previousValue-$element\n')
+          : '• ${talks.first.title}\n';
+      var snackBar = SnackBar(
+        content: Text(
+          'Selected\n${talksString}at ${timeInterval.start.toFormatedString()}',
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
       context.router
           .push(SelectionRoute(timeIntervalIndex: nextTimeIntervalIndex));
     } else {
+      var snackBar = const SnackBar(
+        content: Text(
+          'Schedule Complete!',
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
       context.router.replaceAll([const ScheduleRoute()]);
     }
   }

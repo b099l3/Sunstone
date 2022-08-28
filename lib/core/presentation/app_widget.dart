@@ -1,10 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'routes/guards.dart';
 import 'routes/router.gr.dart';
 
 class App extends StatelessWidget {
-  final _appRouter = AppRouter();
+  final _appRouter = AppRouter(scheduleSetGuard: ScheduleSetGuard());
 
   App({Key? key}) : super(key: key);
 
