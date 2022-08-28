@@ -17,10 +17,15 @@ import 'package:flutter/material.dart' as _i5;
 import '../home_page.dart' as _i1;
 import '../schedule_page.dart' as _i2;
 import '../selection_page.dart' as _i3;
+import 'guards.dart' as _i6;
 
 class AppRouter extends _i4.RootStackRouter {
-  AppRouter([_i5.GlobalKey<_i5.NavigatorState>? navigatorKey])
+  AppRouter(
+      {_i5.GlobalKey<_i5.NavigatorState>? navigatorKey,
+      required this.scheduleSetGuard})
       : super(navigatorKey);
+
+  final _i6.ScheduleSetGuard scheduleSetGuard;
 
   @override
   final Map<String, _i4.PageFactory> pagesMap = {
@@ -46,7 +51,7 @@ class AppRouter extends _i4.RootStackRouter {
 
   @override
   List<_i4.RouteConfig> get routes => [
-        _i4.RouteConfig(HomeRoute.name, path: '/'),
+        _i4.RouteConfig(HomeRoute.name, path: '/', guards: [scheduleSetGuard]),
         _i4.RouteConfig(ScheduleRoute.name, path: '/schedule'),
         _i4.RouteConfig(SelectionRoute.name, path: '/selection/:id')
       ];
