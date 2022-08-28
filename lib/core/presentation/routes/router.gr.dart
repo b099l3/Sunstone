@@ -22,10 +22,13 @@ import 'guards.dart' as _i6;
 class AppRouter extends _i4.RootStackRouter {
   AppRouter(
       {_i5.GlobalKey<_i5.NavigatorState>? navigatorKey,
-      required this.scheduleSetGuard})
+      required this.scheduleGuard,
+      required this.homeGuard})
       : super(navigatorKey);
 
-  final _i6.ScheduleSetGuard scheduleSetGuard;
+  final _i6.ScheduleGuard scheduleGuard;
+
+  final _i6.HomeGuard homeGuard;
 
   @override
   final Map<String, _i4.PageFactory> pagesMap = {
@@ -51,8 +54,9 @@ class AppRouter extends _i4.RootStackRouter {
 
   @override
   List<_i4.RouteConfig> get routes => [
-        _i4.RouteConfig(HomeRoute.name, path: '/', guards: [scheduleSetGuard]),
-        _i4.RouteConfig(ScheduleRoute.name, path: '/schedule'),
+        _i4.RouteConfig(HomeRoute.name, path: '/', guards: [scheduleGuard]),
+        _i4.RouteConfig(ScheduleRoute.name,
+            path: '/schedule', guards: [homeGuard]),
         _i4.RouteConfig(SelectionRoute.name, path: '/selection/:id')
       ];
 }

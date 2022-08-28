@@ -5,7 +5,10 @@ import 'routes/guards.dart';
 import 'routes/router.gr.dart';
 
 class App extends StatelessWidget {
-  final _appRouter = AppRouter(scheduleSetGuard: ScheduleSetGuard());
+  final _appRouter = AppRouter(
+    scheduleGuard: ScheduleGuard(),
+    homeGuard: HomeGuard(),
+  );
 
   App({Key? key}) : super(key: key);
 

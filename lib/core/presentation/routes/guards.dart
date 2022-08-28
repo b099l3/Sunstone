@@ -8,7 +8,7 @@ import '../../domain/schedule.dart';
 import '../../infrastructure/talks_data.dart';
 import 'router.gr.dart';
 
-class ScheduleSetGuard extends AutoRouteGuard {
+class ScheduleGuard extends AutoRouteGuard {
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) async {
     // Again this should be like this, duplicated code but Im on holiday
@@ -24,5 +24,24 @@ class ScheduleSetGuard extends AutoRouteGuard {
       }
     }
     resolver.next(true);
+  }
+}
+
+class HomeGuard extends AutoRouteGuard {
+  @override
+  void onNavigation(NavigationResolver resolver, StackRouter router) async {
+    // Again this should be like this, duplicated code but Im on holiday
+    final prefs = await SharedPreferences.getInstance();
+    final jsonSchedule = prefs.getString(scheduleKey);
+
+    if (jsonSchedule != null) {
+      final content = json.decode(jsonSchedule) as Map<String, Object?>;
+      final schedule = Schedule.fromJson(content);
+      if (schedule.data.length > TalksData.getMandatoryTalks().length) {
+        resolver.next(true);
+        return;
+      }
+    }
+    router.replace(const HomeRoute());
   }
 }
