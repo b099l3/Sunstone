@@ -29,17 +29,8 @@ class SchedulePage extends ConsumerWidget {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         splashColor: Colors.purple,
-        focusColor: Colors.transparent,
-        hoverColor: Colors.transparent,
-        // foregroundColor: Colors.transparent,
-        enableFeedback: false,
-        disabledElevation: 0,
-        focusElevation: 0,
-        hoverElevation: 0,
-        highlightElevation: 0,
-        elevation: 0,
         child: const Text(
           '💙',
           style: TextStyle(fontSize: 36),
@@ -64,8 +55,10 @@ class SchedulePage extends ConsumerWidget {
             ),
             actions: [
               TextButton(
-                onPressed: () =>
-                    launchUrl(Uri.parse('https://twitter.com/b099l3')),
+                onPressed: () => launchUrl(
+                  Uri.parse('https://twitter.com/b099l3'),
+                  mode: LaunchMode.externalApplication,
+                ),
                 child: const Text(
                   'Twitter',
                   style: TextStyle(
@@ -76,8 +69,10 @@ class SchedulePage extends ConsumerWidget {
                 ),
               ),
               TextButton(
-                onPressed: () =>
-                    launchUrl(Uri.parse('https://github.com/b099l3')),
+                onPressed: () => launchUrl(
+                  Uri.parse('https://github.com/b099l3'),
+                  mode: LaunchMode.externalApplication,
+                ),
                 child: const Text(
                   'Github',
                   style: TextStyle(

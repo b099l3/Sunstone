@@ -32,6 +32,7 @@ class SelectionPage extends ConsumerWidget {
         text: 'Day ${day + 1} - ${timeInterval.start.toFormatedString()} ',
       ),
       body: ListView.builder(
+        padding: const EdgeInsets.symmetric(vertical: 32),
         itemCount: talks.length,
         itemBuilder: (context, index) {
           final talk = talks[index];

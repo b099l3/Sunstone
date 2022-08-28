@@ -6,6 +6,6 @@ extension DateOnlyCompare on DateTime {
   }
 
   String toFormatedString() {
-    return DateFormat('kk:mm').format(this);
+    return DateFormat.jm().format(this);
   }
 }
