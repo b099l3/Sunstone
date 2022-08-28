@@ -68,17 +68,15 @@ class HomePage extends ConsumerWidget {
               ),
             ],
           ),
-          body: ListView(
-            children: [
-              Shake(
-                child: Hover(
-                  child: GestureDetector(
-                    onTap: () => context.router.push(SelectionRoute()),
-                    child: const Sunstone(),
-                  ),
+          body: Center(
+            child: Shake(
+              child: Hover(
+                child: GestureDetector(
+                  onTap: () => context.router.push(SelectionRoute()),
+                  child: const Sunstone(),
                 ),
               ),
-            ],
+            ),
           ),
         );
       },
