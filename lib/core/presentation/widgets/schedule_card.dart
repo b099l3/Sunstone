@@ -37,10 +37,12 @@ class ScheduleCard extends StatelessWidget {
             child: Text(
               talk.title,
               textAlign: TextAlign.start,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: talk.location == Location.other
+                    ? Colors.blueGrey
+                    : Colors.black,
               ),
             ),
           ),
