@@ -1,9 +1,28 @@
-import '/domain/speaker.dart';
-import 'domain/location.dart';
-import 'domain/talk.dart';
+import '../domain/location.dart';
+import '../domain/speaker.dart';
+import '../domain/talk.dart';
+import '../domain/time_interval.dart';
+import '../shared/date_time_ext.dart';
 
 class TalksData {
-  static List<Talk> get talks => [
+  static Iterable<Talk> getTalksForTimeInterval(TimeInterval timeInteval) {
+    return data.where((talk) =>
+        (talk.start.isAfter(timeInteval.start) ||
+            talk.start.isAtSameMomentAs(timeInteval.start)) &&
+        (talk.end.isBefore(timeInteval.end) ||
+            talk.end.isAtSameMomentAs(timeInteval.end)) &&
+        talk.start.isSameDate(timeInteval.start));
+  }
+
+  static Map<DateTime, List<Talk>> getMandatoryTalks() {
+    final mapEntryTalks = data
+        .where((talk) => (talk.speakers == null))
+        .map((t) => MapEntry(t.start, [t]));
+    final mTalks = Map.fromEntries(mapEntryTalks);
+    return mTalks;
+  }
+
+  static List<Talk> get data => [
         Talk(
           title: 'REGISTRATION',
           start: DateTime(2022, 8, 31, 8, 00),
@@ -34,7 +53,8 @@ class TalksData {
           speakers: [Speaker.mikeRydstrom()],
         ),
         Talk(
-          title: 'lutter, FFI And Fun: Windows Development With Dart And Win32',
+          title:
+              'Flutter, FFI And Fun: Windows Development With Dart And Win32',
           start: DateTime(2022, 9, 1, 9, 00),
           end: DateTime(2022, 9, 1, 10, 00),
           location: Location.valhalla,
@@ -313,8 +333,8 @@ class TalksData {
         Talk(
           title:
               'Trusting Your Clients: Live-Coding A Cross-Platform Multiplayer Bingo App',
-          start: DateTime(2022, 8, 31, 14, 00),
-          end: DateTime(2022, 8, 31, 15, 00),
+          start: DateTime(2022, 9, 1, 14, 00),
+          end: DateTime(2022, 9, 1, 15, 00),
           location: Location.thor,
           link:
               'https://fluttervikings.com/trusting-your-clients-live-coding-a-cross-platform-multiplayer-bingo-app',

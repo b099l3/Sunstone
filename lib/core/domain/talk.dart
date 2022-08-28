@@ -1,6 +1,11 @@
-import 'package:sunstone/domain/location.dart';
-import 'package:sunstone/domain/speaker.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+import 'location.dart';
+import 'speaker.dart';
+
+part 'talk.g.dart';
+
+@JsonSerializable()
 class Talk {
   String title;
   DateTime start;
@@ -17,4 +22,7 @@ class Talk {
     this.link,
     this.speakers,
   });
+
+  factory Talk.fromJson(Map<String, dynamic> json) => _$TalkFromJson(json);
+  Map<String, dynamic> toJson() => _$TalkToJson(this);
 }

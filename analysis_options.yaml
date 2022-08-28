@@ -23,7 +23,12 @@ linter:
   # producing the lint.
   rules:
     # avoid_print: false  # Uncomment to disable the `avoid_print` rule
-    # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
+    prefer_single_quotes: true # Uncomment to enable the `prefer_single_quotes` rule
 
+    # Going with relative imports, recommended by effective dart:
+    # https://dart.dev/guides/language/effective-dart/usage#prefer-relative-import-paths
+    # https://stackoverflow.com/a/66188522/1107580
+    prefer_relative_imports: true
+    always_use_package_imports: false
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

@@ -1,3 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'speaker.g.dart';
+
+@JsonSerializable()
 class Speaker {
   String name;
   String subtitle;
@@ -449,4 +454,8 @@ class Speaker {
           twitter: 'https://twitter.com/KelkarRenuka',
           linkedIn: 'https://www.linkedin.com/in/renukakelkar/',
         );
+
+  factory Speaker.fromJson(Map<String, dynamic> json) =>
+      _$SpeakerFromJson(json);
+  Map<String, dynamic> toJson() => _$SpeakerToJson(this);
 }
