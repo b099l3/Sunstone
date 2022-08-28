@@ -18,6 +18,7 @@ class TalkCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
       child: Card(
+        // color: talk.location.color(),
         shape: RoundedRectangleBorder(
           side: BorderSide(
             color: Colors.grey.shade300,
@@ -25,49 +26,105 @@ class TalkCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(20.0),
         ),
         elevation: 2,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
-              child: Text(
-                talk.title,
-                textAlign: TextAlign.start,
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 14.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Flexible(
+                    child: Text(
+                      talk.title,
+                      textAlign: TextAlign.start,
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    alignment: Alignment.topRight,
+                    visualDensity: VisualDensity.compact,
+                    highlightColor: Colors.transparent,
+                    focusColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    icon: const Icon(
+                      Icons.info_outline_rounded,
+                    ),
+                    onPressed: () {
+                      if (talk.link != null) {
+                        _launchUrl(Uri.parse(talk.link!));
+                      }
+                    },
+                  ),
+                ],
               ),
-            ),
-            IntrinsicHeight(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                ),
+              IntrinsicHeight(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Chip(
-                      labelPadding: const EdgeInsets.all(0),
-                      padding: const EdgeInsets.all(0.0),
-                      backgroundColor: Colors.white,
-                      avatar: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        child: Icon(
-                          Icons.schedule,
-                          color: Colors.blueGrey.shade900,
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Icon(
+                            Icons.schedule,
+                            color: Colors.blueGrey.shade900,
+                          ),
                         ),
-                      ),
-                      label: Text(
-                        '${talk.start.toFormatedString()} - ${talk.end.toFormatedString()}',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blueGrey.shade900,
+                        Text(
+                          '${talk.start.toFormatedString()} - ${talk.end.toFormatedString()}',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueGrey.shade900,
+                          ),
                         ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: Column(
+                        children: talk.speakers!
+                            .map(
+                              (speaker) => Padding(
+                                padding: const EdgeInsets.only(
+                                  bottom: 4.0,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 8.0),
+                                      child: CircleAvatar(
+                                        radius: 18,
+                                        backgroundColor: Colors.grey,
+                                        backgroundImage:
+                                            NetworkImage(speaker.imageUrl),
+                                      ),
+                                    ),
+                                    Text(
+                                      speaker.name,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey.shade800,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                            .toList(),
                       ),
                     ),
                     Chip(
@@ -85,62 +142,17 @@ class TalkCard extends StatelessWidget {
                         talk.location.name.capitalise(),
                         textAlign: TextAlign.center,
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
                       ),
-                    ),
-                    Row(
-                      children: talk.speakers!
-                          .map(
-                            (speaker) => Chip(
-                              labelPadding:
-                                  const EdgeInsets.fromLTRB(0, 4, 6, 0),
-                              padding: const EdgeInsets.all(4.0),
-                              backgroundColor: Colors.grey,
-                              avatar: const CircleAvatar(
-                                backgroundColor: Colors.grey,
-                                child: Icon(
-                                  Icons.people,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              label: Text(
-                                speaker.name,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          )
-                          .toList(),
                     )
                   ],
                 ),
               ),
-            ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: IconButton(
-                highlightColor: Colors.transparent,
-                focusColor: Colors.transparent,
-                splashColor: Colors.transparent,
-                icon: const Icon(
-                  Icons.info_outline_rounded,
-                ),
-                onPressed: () {
-                  if (talk.link != null) {
-                    _launchUrl(Uri.parse(talk.link!));
-                  }
-                },
-                // child: const Text('more info'),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
