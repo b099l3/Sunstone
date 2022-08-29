@@ -48,7 +48,9 @@ class AppRouter extends _i4.RootStackRouter {
       return _i4.MaterialPageX<dynamic>(
           routeData: routeData,
           child: _i3.SelectionPage(
-              key: args.key, timeIntervalIndex: args.timeIntervalIndex));
+              key: args.key,
+              fromSchedule: args.fromSchedule,
+              timeIntervalIndex: args.timeIntervalIndex));
     }
   };
 
@@ -80,25 +82,31 @@ class ScheduleRoute extends _i4.PageRouteInfo<void> {
 /// generated route for
 /// [_i3.SelectionPage]
 class SelectionRoute extends _i4.PageRouteInfo<SelectionRouteArgs> {
-  SelectionRoute({_i5.Key? key, int timeIntervalIndex = 0})
+  SelectionRoute(
+      {_i5.Key? key, bool fromSchedule = false, int timeIntervalIndex = 0})
       : super(SelectionRoute.name,
             path: '/selection/:id',
             args: SelectionRouteArgs(
-                key: key, timeIntervalIndex: timeIntervalIndex),
+                key: key,
+                fromSchedule: fromSchedule,
+                timeIntervalIndex: timeIntervalIndex),
             rawPathParams: {'id': timeIntervalIndex});
 
   static const String name = 'SelectionRoute';
 }
 
 class SelectionRouteArgs {
-  const SelectionRouteArgs({this.key, this.timeIntervalIndex = 0});
+  const SelectionRouteArgs(
+      {this.key, this.fromSchedule = false, this.timeIntervalIndex = 0});
 
   final _i5.Key? key;
+
+  final bool fromSchedule;
 
   final int timeIntervalIndex;
 
   @override
   String toString() {
-    return 'SelectionRouteArgs{key: $key, timeIntervalIndex: $timeIntervalIndex}';
+    return 'SelectionRouteArgs{key: $key, fromSchedule: $fromSchedule, timeIntervalIndex: $timeIntervalIndex}';
   }
 }

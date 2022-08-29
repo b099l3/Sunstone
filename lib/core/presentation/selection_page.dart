@@ -18,8 +18,12 @@ import 'widgets/talk_card.dart';
 
 class SelectionPage extends ConsumerWidget {
   final int timeIntervalIndex;
-  const SelectionPage({Key? key, @PathParam('id') this.timeIntervalIndex = 0})
-      : super(key: key);
+  final bool fromSchedule;
+  const SelectionPage({
+    Key? key,
+    this.fromSchedule = false,
+    @PathParam('id') this.timeIntervalIndex = 0,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -68,7 +72,7 @@ class SelectionPage extends ConsumerWidget {
       BuildContext context, List<Talk> talks, TimeInterval timeInterval) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     final nextTimeIntervalIndex = timeIntervalIndex + 1;
-    if (nextTimeIntervalIndex < TimeIntervalsData.data.length) {
+    if (nextTimeIntervalIndex < TimeIntervalsData.data.length || fromSchedule) {
       final talksString = talks.length > 1
           ? talks
               .map((t) => t.title)
@@ -80,8 +84,13 @@ class SelectionPage extends ConsumerWidget {
         ),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      context.router
-          .push(SelectionRoute(timeIntervalIndex: nextTimeIntervalIndex));
+      if (fromSchedule) {
+        context.router.pop();
+      } else {
+        context.router.push(SelectionRoute(
+          timeIntervalIndex: nextTimeIntervalIndex,
+        ));
+      }
     } else {
       var snackBar = const SnackBar(
         content: Text(
