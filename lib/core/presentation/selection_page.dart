@@ -27,8 +27,9 @@ class SelectionPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final timeInterval =
-        TimeIntervalsData.data.entries.elementAt(timeIntervalIndex).value;
+    final timeIntervals = TimeIntervalsData.data.entries.toList()
+      ..sort(((a, b) => a.key.compareTo(b.key)));
+    final timeInterval = timeIntervals.elementAt(timeIntervalIndex).value;
     final talks = TalksData.getTalksForTimeInterval(timeInterval).toList();
     final day =
         ConfData.days.indexWhere((day) => timeInterval.start.isSameDate(day));
