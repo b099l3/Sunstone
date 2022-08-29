@@ -6,6 +6,7 @@ import 'package:ordered_set/ordered_set.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../gen/assets.gen.dart';
 import '../application/schedule_provider.dart';
 import '../domain/schedule.dart';
 import '../domain/talk.dart';
@@ -61,12 +62,24 @@ class SchedulePage extends ConsumerWidget {
                       color: Colors.black,
                     ),
                   ),
-                  content: Text(
-                    'Come say hey if you are at Flutter Vikings or follow me on:',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.grey.shade900,
-                    ),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CircleAvatar(
+                          backgroundImage: Assets.images.me.image().image,
+                          radius: 80,
+                        ),
+                      ),
+                      Text(
+                        'Come say hey if you are at Flutter Vikings or follow me on:',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.grey.shade900,
+                        ),
+                      ),
+                    ],
                   ),
                   actions: [
                     TextButton(

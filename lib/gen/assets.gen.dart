@@ -17,6 +17,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/icon.png
   AssetGenImage get icon => const AssetGenImage('assets/images/icon.png');
 
+  /// File path: assets/images/me.jpg
+  AssetGenImage get me => const AssetGenImage('assets/images/me.jpg');
+
   /// File path: assets/images/sunstone.png
   AssetGenImage get sunstonePng =>
       const AssetGenImage('assets/images/sunstone.png');
