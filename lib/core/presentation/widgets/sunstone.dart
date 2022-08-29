@@ -7,7 +7,7 @@ class Sunstone extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Assets.images.sunstonePng.image(
+    return Assets.images.sunstone.image(
       fit: BoxFit.fitWidth,
       filterQuality: FilterQuality.high,
     );

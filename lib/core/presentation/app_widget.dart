@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../../gen/fonts.gen.dart';
 import 'routes/guards.dart';
 import 'routes/router.gr.dart';
 
@@ -18,7 +19,7 @@ class App extends StatelessWidget {
       title: 'Sunstone',
       debugShowCheckedModeBanner: !kDebugMode,
       theme: ThemeData(
-        fontFamily: 'Norse',
+        fontFamily: FontFamily.norse,
         primarySwatch: Colors.blue,
       ),
       routerDelegate: _appRouter.delegate(),

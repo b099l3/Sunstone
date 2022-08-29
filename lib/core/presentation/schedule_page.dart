@@ -1,18 +1,13 @@
-import 'package:auto_route/auto_route.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ordered_set/comparing.dart';
-import 'package:ordered_set/ordered_set.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-import '../../gen/assets.gen.dart';
 import '../application/schedule_provider.dart';
 import '../domain/schedule.dart';
-import '../domain/talk.dart';
 import '../infrastructure/conf_data.dart';
 import '../shared/date_time_ext.dart';
-import 'routes/router.gr.dart';
+import 'theme/text_styles.dart';
+import 'widgets/dialogs/dialogs.dart';
 import 'widgets/schedule_card.dart';
 import 'widgets/sunstone.dart';
 import 'widgets/sunstone_app_bar.dart';
@@ -23,26 +18,24 @@ class SchedulePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     AsyncValue<Schedule> config = ref.watch(savedScheduleProvider);
-
+    ref.listen(updateEveryMinProvider, (_, next) {
+      debugPrint('refreshed ${DateTime.now().toFormatedString()}');
+      ref.invalidate(savedScheduleProvider);
+    });
     return config.when(
-      loading: () {
-        return const CircularProgressIndicator();
-      },
+      loading: () => const CircularProgressIndicator(),
       error: (err, stack) => Text('Error: $err'),
       data: (savedSchedule) {
         final orderedTalks =
-            OrderedSet<Talk>(Comparing.join([(p) => p.start, (p) => p.title]));
-        orderedTalks.addAll(savedSchedule.data.entries.expand((e) => e.value));
+            savedSchedule.data.entries.expand((entry) => entry.value).toList();
+        orderedTalks.sort((a, b) => a.start.compareTo(b.start));
 
-        final day1Talks = orderedTalks
-            .where((t) => t.start.isSameDate(ConfData.days[0]))
-            .toList();
-        final day2Talks = orderedTalks
-            .where((t) => t.start.isSameDate(ConfData.days[1]))
-            .toList();
+        final talksOnDays = ConfData.days.map((conferenceDay) => orderedTalks
+            .where((t) => t.start.isSameDate(conferenceDay))
+            .toList());
 
         return DefaultTabController(
-          length: 2,
+          length: talksOnDays.length,
           child: Scaffold(
             floatingActionButton: FloatingActionButton(
               backgroundColor: Colors.white,
@@ -51,163 +44,38 @@ class SchedulePage extends ConsumerWidget {
                 Icons.waving_hand,
                 color: Colors.black,
               ),
-              onPressed: () => showDialog(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                  title: const Text(
-                    'Built by Iain Smith',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: CircleAvatar(
-                          backgroundImage: Assets.images.me.image().image,
-                          radius: 80,
-                        ),
-                      ),
-                      Text(
-                        'Come say hey if you are at Flutter Vikings or follow me on:',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.grey.shade900,
-                        ),
-                      ),
-                    ],
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => launchUrl(
-                        Uri.parse('https://twitter.com/b099l3'),
-                        mode: LaunchMode.externalApplication,
-                      ),
-                      child: const Text(
-                        'Twitter',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blueAccent,
-                        ),
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () => launchUrl(
-                        Uri.parse('https://github.com/b099l3'),
-                        mode: LaunchMode.externalApplication,
-                      ),
-                      child: const Text(
-                        'Github',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.purple,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              onPressed: () => Dialogs.showHelloDialog(context),
             ),
             appBar: SunstoneAppBar(
               text: 'Your Schedule',
-              bottom: const TabBar(
-                labelColor: Colors.blue,
-                unselectedLabelColor: Colors.grey,
-                labelStyle: TextStyle(
-                  fontFamily: 'Norse',
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-                unselectedLabelStyle: TextStyle(
-                  fontFamily: 'Norse',
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey,
-                ),
-                tabs: [
-                  Tab(text: 'Day 1'),
-                  Tab(text: 'Day 2'),
-                ],
-              ),
+              bottom: TabBar(
+                  labelColor: Colors.blue,
+                  unselectedLabelColor: Colors.grey,
+                  labelStyle: TextStyles.body,
+                  unselectedLabelStyle: TextStyles.bodyGrey,
+                  tabs: ConfData.days
+                      .mapIndexed((index, conferenceDay) =>
+                          Tab(text: 'Day ${index + 1}'))
+                      .toList()),
               actions: [
                 GestureDetector(
-                  onTap: () => showDialog(
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      title: const Text(
-                        'Use the Sunstone again?',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                      content: Text(
-                        'This will clear your schedule and start again?',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.grey.shade900,
-                        ),
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => context.router.pop(),
-                          child: Text(
-                            'Cancel',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey.shade900,
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            //TODO this should really not be here, but I dont have alot of time
-                            final prefs = await SharedPreferences.getInstance();
-                            await prefs.clear();
-                            context.router.replaceAll([const HomeRoute()]);
-                          },
-                          child: const Text(
-                            'OK',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.purple,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  onTap: () => Dialogs.showClearDialog(context),
                   child: const Sunstone(),
                 )
               ],
             ),
             body: TabBarView(
-              children: [
-                ListView.builder(
-                  itemCount: day1Talks.length,
-                  itemBuilder: (context, index) {
-                    final talk = day1Talks.elementAt(index);
-                    return ScheduleCard(talk);
-                  },
-                ),
-                ListView.builder(
-                  itemCount: day2Talks.length,
-                  itemBuilder: (context, index) {
-                    final talk = day2Talks.elementAt(index);
-                    return ScheduleCard(talk);
-                  },
-                ),
-              ],
+              children: talksOnDays
+                  .map(
+                    (talks) => ListView.builder(
+                      itemCount: talks.length,
+                      itemBuilder: (context, index) {
+                        final talk = talks.elementAt(index);
+                        return ScheduleCard(talk);
+                      },
+                    ),
+                  )
+                  .toList(),
             ),
           ),
         );

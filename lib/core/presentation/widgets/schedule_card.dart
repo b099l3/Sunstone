@@ -5,11 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../application/schedule_provider.dart';
 import '../../domain/location.dart';
 import '../../domain/talk.dart';
+import '../../infrastructure/conf_data.dart';
 import '../../infrastructure/time_intervals_data.dart';
 import '../../shared/date_time_ext.dart';
-import '../../shared/location_ext.dart';
-import '../../shared/string_ext.dart';
 import '../routes/router.gr.dart';
+import '../theme/text_styles.dart';
+import 'location_chip.dart';
 
 class ScheduleCard extends ConsumerWidget {
   final Talk talk;
@@ -17,31 +18,41 @@ class ScheduleCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final nowInOslo = ConfData.nowInConference;
+    final isNow = nowInOslo.isAfter(talk.start) && nowInOslo.isBefore(talk.end);
+    final hasPassed = nowInOslo.isAfter(talk.end);
+
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
+      padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(right: 16.0),
+            padding: const EdgeInsets.only(right: 8.0),
             child: ConstrainedBox(
               constraints: const BoxConstraints(
-                minWidth: 80.0,
+                minWidth: 100.0,
               ),
               child: Text(
                 '${talk.start.toFormatedString()} - ${talk.end.toFormatedString()}',
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: TextStyles.subtitle.copyWith(
                   fontSize: 16,
                   color: Colors.blueGrey.shade900,
                 ),
               ),
             ),
           ),
+          if (isNow)
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Text('👉', style: TextStyles.body),
+            ),
+
           Expanded(
             child: GestureDetector(
               onTap: () async {
-                if (talk.location == Location.other) {
+                if (talk.location == Location.other || hasPassed || isNow) {
                   return;
                 }
                 final timeInterval =
@@ -59,28 +70,34 @@ class ScheduleCard extends ConsumerWidget {
               child: Text(
                 talk.title,
                 textAlign: TextAlign.start,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: talk.location == Location.other
-                      ? Colors.blueGrey
-                      : Colors.black,
-                ),
+                style: getTextStyle(hasPassed),
               ),
             ),
           ),
           if (talk.location != Location.other)
-            Text(
-              talk.location.name.capitalise(),
-              textAlign: TextAlign.end,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: talk.location.color(),
-              ),
-            ),
+            LocationChip(
+              location: talk.location,
+              hasIcon: false,
+            )
+          // Text(
+          //   talk.location.name.capitalise(),
+          //   textAlign: TextAlign.end,
+          //   style: TextStyles.bodyGreyS.copyWith(
+          //     color: talk.location.color(),
+          //   ),
+          // ),
         ],
       ),
     );
+  }
+
+  TextStyle getTextStyle(bool hasPassed) {
+    if (hasPassed) {
+      return TextStyles.bodyGreyMLineThrough;
+    }
+    TextStyle textStyle = talk.location == Location.other
+        ? TextStyles.bodyBlueGreyM
+        : TextStyles.bodyBlackM;
+    return textStyle;
   }
 }

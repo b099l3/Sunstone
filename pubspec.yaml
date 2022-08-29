@@ -9,15 +9,15 @@ environment:
 dependencies:
   auto_route: ^5.0.1
   auto_size_text: ^3.0.0
+  collection: ^1.16.0
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.0.0-dev.9
-  flutter_svg: ^1.1.4
   intl: ^0.17.0
   json_annotation: ^4.6.0
-  ordered_set: ^5.0.0
   shared_preferences: ^2.0.15
+  timezone: ^0.8.0
   url_launcher: ^6.1.5
 
 dev_dependencies:
@@ -28,10 +28,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   json_serializable: ^6.3.1
-
-flutter_gen:
-  integrations:
-    flutter_svg: true
 
 flutter:
   uses-material-design: true

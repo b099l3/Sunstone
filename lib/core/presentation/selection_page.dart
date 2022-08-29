@@ -81,7 +81,7 @@ class SelectionPage extends ConsumerWidget {
           : '• ${talks.first.title}\n';
       var snackBar = SnackBar(
         content: Text(
-          'Selected\n${talksString}at ${timeInterval.start.toFormatedString()}',
+          'Added\n${talksString}at ${timeInterval.start.toFormatedString()}',
         ),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);

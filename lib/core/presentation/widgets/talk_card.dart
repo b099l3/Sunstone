@@ -3,8 +3,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../domain/talk.dart';
 import '../../shared/date_time_ext.dart';
-import '../../shared/location_ext.dart';
-import '../../shared/string_ext.dart';
+import '../theme/text_styles.dart';
+import 'location_chip.dart';
 
 class TalkCard extends StatelessWidget {
   final Talk talk;
@@ -18,7 +18,6 @@ class TalkCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
       child: Card(
-        // color: talk.location.color(),
         shape: RoundedRectangleBorder(
           side: BorderSide(
             color: Colors.grey.shade300,
@@ -39,11 +38,7 @@ class TalkCard extends StatelessWidget {
                     child: Text(
                       talk.title,
                       textAlign: TextAlign.start,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
+                      style: TextStyles.body,
                     ),
                   ),
                   IconButton(
@@ -81,11 +76,7 @@ class TalkCard extends StatelessWidget {
                         Text(
                           '${talk.start.toFormatedString()} - ${talk.end.toFormatedString()}',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blueGrey.shade900,
-                          ),
+                          style: TextStyles.bodyGreyS,
                         ),
                       ],
                     ),
@@ -114,11 +105,7 @@ class TalkCard extends StatelessWidget {
                                     Text(
                                       speaker.name,
                                       textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.grey.shade800,
-                                      ),
+                                      style: TextStyles.subtitle,
                                     ),
                                   ],
                                 ),
@@ -127,27 +114,7 @@ class TalkCard extends StatelessWidget {
                             .toList(),
                       ),
                     ),
-                    Chip(
-                      labelPadding: const EdgeInsets.fromLTRB(0, 4, 6, 0),
-                      padding: const EdgeInsets.all(4.0),
-                      backgroundColor: talk.location.color(),
-                      avatar: CircleAvatar(
-                        backgroundColor: talk.location.color(),
-                        child: const Icon(
-                          Icons.home,
-                          color: Colors.white,
-                        ),
-                      ),
-                      label: Text(
-                        talk.location.name.capitalise(),
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    )
+                    LocationChip(location: talk.location),
                   ],
                 ),
               ),

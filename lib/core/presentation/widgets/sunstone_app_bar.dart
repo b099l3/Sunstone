@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme/text_styles.dart';
+
 class SunstoneAppBar extends AppBar {
   SunstoneAppBar({
     Key? key,
@@ -15,11 +17,7 @@ class SunstoneAppBar extends AppBar {
           foregroundColor: Colors.black,
           title: Text(
             text,
-            style: const TextStyle(
-              fontSize: 45,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
+            style: TextStyles.h1,
           ),
         );
 }

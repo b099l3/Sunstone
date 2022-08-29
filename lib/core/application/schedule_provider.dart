@@ -18,3 +18,7 @@ final savedScheduleProvider = FutureProvider<Schedule>((ref) async {
 
   return Schedule(data: TalksData.getMandatoryTalks());
 });
+
+final updateEveryMinProvider = StreamProvider.autoDispose<int>((ref) {
+  return Stream<int>.periodic(const Duration(minutes: 1), (int count) => count);
+});
