@@ -5,6 +5,6 @@ import 'package:timezone/browser.dart' as tz;
 import 'core/presentation/app_widget.dart';
 
 void main() async {
-  await tz.initializeTimeZone();
+  await tz.initializeTimeZone('packages/timezone/data/latest_10y.tzf');
   runApp(ProviderScope(child: App()));
 }
