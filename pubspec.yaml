@@ -34,6 +34,8 @@ flutter:
   assets:
     - assets/images/
 
+    - assets/timezone/data/latest_10y.tzf
+
   fonts:
     - family: Norse
       fonts:

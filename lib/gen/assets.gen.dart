@@ -23,10 +23,24 @@ class $AssetsImagesGen {
       const AssetGenImage('assets/images/sunstone.png');
 }
 
+class $AssetsTimezoneGen {
+  const $AssetsTimezoneGen();
+
+  $AssetsTimezoneDataGen get data => const $AssetsTimezoneDataGen();
+}
+
+class $AssetsTimezoneDataGen {
+  const $AssetsTimezoneDataGen();
+
+  /// File path: assets/timezone/data/latest_10y.tzf
+  String get latest10y => 'assets/timezone/data/latest_10y.tzf';
+}
+
 class Assets {
   Assets._();
 
   static const $AssetsImagesGen images = $AssetsImagesGen();
+  static const $AssetsTimezoneGen timezone = $AssetsTimezoneGen();
 }
 
 class AssetGenImage {
