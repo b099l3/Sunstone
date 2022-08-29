@@ -4,8 +4,8 @@ Vikings used sunstone to navigate the sea, you can too. Navigate the Flutter Vik
 
 ## Getting Started
 
-This project uses ASDF to set up the Flutter version in [.tool-versions](.tool-versions)
+This project uses [asdf](https://asdf-vm.com/) to set up the Flutter version in [.tool-versions](.tool-versions)
 
 Then run one of the launch commands in VSCode
 
-This was built over a weekend some might not be the best code.
+This was built while I was in Oslo, so might not be the best code.
