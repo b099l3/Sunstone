@@ -1,4 +1,3 @@
-import 'package:timezone/browser.dart' as tz;
 class ConfData {
   static List<DateTime> days = [
     DateTime(2022, 8, 31, 9, 00),
@@ -6,8 +5,10 @@ class ConfData {
   ];
 
   static DateTime get nowInConference {
-    var oslo = tz.getLocation('Europe/Oslo');
-    var nowOslo = tz.TZDateTime.now(oslo);
+    // var oslo = tz.getLocation('Europe/Oslo');
+    // var nowOslo = tz.TZDateTime.now(oslo);
+    var nowOslo = DateTime.now();
+
     return nowOslo;
   }
 }
