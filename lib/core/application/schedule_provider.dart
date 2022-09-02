@@ -7,6 +7,13 @@ import '../domain/schedule.dart';
 import '../infrastructure/talks_data.dart';
 
 const scheduleKey = 'schedule';
+
+// From watching Remi's talk
+// 1. I think this could be a state provider with methods
+// 1.1. I can then move some of the shared preference logic into here
+// 1.2 I think I can also move the everyMinProvider to be a timer
+// inside this provider that invalidates
+
 final savedScheduleProvider = FutureProvider<Schedule>((ref) async {
   final prefs = await SharedPreferences.getInstance();
 
