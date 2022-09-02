@@ -30,6 +30,7 @@ class Dialogs {
             TextButton(
               onPressed: () async {
                 //TODO this should really not be here, but I dont have alot of time
+                // See new comment in providers
                 final prefs = await SharedPreferences.getInstance();
                 await prefs.clear();
                 context.router.replaceAll([const HomeRoute()]);
