@@ -12,9 +12,6 @@ import 'package:flutter/widgets.dart';
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
-  /// File path: assets/images/icon.png
-  AssetGenImage get icon => const AssetGenImage('assets/images/icon.png');
-
   /// File path: assets/images/me.jpg
   AssetGenImage get me => const AssetGenImage('assets/images/me.jpg');
 
@@ -23,24 +20,10 @@ class $AssetsImagesGen {
       const AssetGenImage('assets/images/sunstone.png');
 }
 
-class $AssetsTimezoneGen {
-  const $AssetsTimezoneGen();
-
-  $AssetsTimezoneDataGen get data => const $AssetsTimezoneDataGen();
-}
-
-class $AssetsTimezoneDataGen {
-  const $AssetsTimezoneDataGen();
-
-  /// File path: assets/timezone/data/latest_10y.tzf
-  String get latest10y => 'assets/timezone/data/latest_10y.tzf';
-}
-
 class Assets {
   Assets._();
 
   static const $AssetsImagesGen images = $AssetsImagesGen();
-  static const $AssetsTimezoneGen timezone = $AssetsTimezoneGen();
 }
 
 class AssetGenImage {
