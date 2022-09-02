@@ -5,9 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../application/schedule_provider.dart';
 import '../../domain/location.dart';
 import '../../domain/talk.dart';
-import '../../infrastructure/conf_data.dart';
 import '../../infrastructure/time_intervals_data.dart';
 import '../../shared/date_time_ext.dart';
+import '../../shared/talk_ext.dart';
 import '../routes/router.gr.dart';
 import '../theme/text_styles.dart';
 import 'location_chip.dart';
@@ -18,10 +18,6 @@ class ScheduleCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final nowInOslo = ConfData.nowInConference;
-    final isNow = nowInOslo.isAfter(talk.start) && nowInOslo.isBefore(talk.end);
-    final hasPassed = nowInOslo.isAfter(talk.end);
-
     return Padding(
       padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 0),
       child: Row(
@@ -43,16 +39,15 @@ class ScheduleCard extends ConsumerWidget {
               ),
             ),
           ),
-          if (isNow)
+          if (talk.isNow)
             Padding(
               padding: const EdgeInsets.only(right: 8.0),
               child: Text('👉', style: TextStyles.body),
             ),
-
           Expanded(
             child: GestureDetector(
               onTap: () async {
-                if (talk.location == Location.other || hasPassed || isNow) {
+                if (talk.location == Location.other) {
                   return;
                 }
                 final timeInterval =
@@ -70,7 +65,7 @@ class ScheduleCard extends ConsumerWidget {
               child: Text(
                 talk.title,
                 textAlign: TextAlign.start,
-                style: getTextStyle(hasPassed),
+                style: getTextStyle(talk.hasPassed),
               ),
             ),
           ),
@@ -79,13 +74,6 @@ class ScheduleCard extends ConsumerWidget {
               location: talk.location,
               hasIcon: false,
             )
-          // Text(
-          //   talk.location.name.capitalise(),
-          //   textAlign: TextAlign.end,
-          //   style: TextStyles.bodyGreyS.copyWith(
-          //     color: talk.location.color(),
-          //   ),
-          // ),
         ],
       ),
     );

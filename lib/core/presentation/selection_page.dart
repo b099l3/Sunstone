@@ -12,6 +12,7 @@ import '../infrastructure/conf_data.dart';
 import '../infrastructure/talks_data.dart';
 import '../infrastructure/time_intervals_data.dart';
 import '../shared/date_time_ext.dart';
+import '../shared/talk_ext.dart';
 import 'routes/router.gr.dart';
 import 'widgets/sunstone_app_bar.dart';
 import 'widgets/talk_card.dart';
@@ -44,6 +45,9 @@ class SelectionPage extends ConsumerWidget {
           final talk = talks[index];
           return GestureDetector(
             onTap: () async {
+              if (talk.isNow || talk.hasPassed) {
+                return;
+              }
               final talksToAdd = talks
                   .where((t) => t.location == talk.location)
                   .fold<MapEntry<DateTime, List<Talk>>>(
@@ -106,7 +110,7 @@ class SelectionPage extends ConsumerWidget {
   Future<void> saveSelection(WidgetRef ref) async {
     final prefs = await SharedPreferences.getInstance();
     final scheduleToSave = ref.read(savedScheduleProvider).value!.toJson();
-    prefs.setString(
+    await prefs.setString(
       scheduleKey,
       jsonEncode(scheduleToSave),
     );
